@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../app.js"></script>
+
+<script type="text/javascript">
+
+	var myApp = angular.module('myApp', []);
+
+	myApp.controller('checkBoxController', function($scope) {
+		$scope.items = [ {
+			name : 'Cheese Pizza ',
+			cost : 10,
+
+		}, {
+			name : 'Peperoni ',
+			cost : 8,
+
+		}, {
+			name : 'Grilled Chicken Sandwich',
+			cost : 7,
+
+		}, {
+			name : 'Pesto Pasta ',
+			cost : 12,
+
+		}, {
+			name : 'Mac and Cheese ',
+			cost : 6,
+
+		}, {
+			name : 'Salad ',
+			cost : 12,
+
+		}, {
+			name : 'Garlic Bread ',
+			cost : 5,
+
+		}, {
+			name : 'Soda ',
+			cost : 2,
+
+		}, {
+			name : 'Juice ',
+			cost : 5,
+
+		}, {
+			name : 'Coffee',
+			cost : 6,
+
+		} ];
+		$scope.selection = [];
+		$scope.sum = 0;
+
+		// toggle selection for a given item by name
+		$scope.toggleSelection = function toggleSelection(item) {
+			var idx = $scope.selection.indexOf(item);
+
+			// is currently selected
+			if (idx > -1) {
+				$scope.sum -= item.cost;
+				$scope.selection.splice(idx, 1);
+
+			}
+
+			// is newly selected
+			else {
+				$scope.sum += item.cost;
+				$scope.selection.push(item);
+
+			}
+
+		};
+
+		/* $scope.add = function add() {
+		
+			$scope.sum=0;
+			for (var i = 0; i < $scope.selection.length; i++) {
+			$scope.sum+=$scope.selection[i].cost;
+			
+		}
+
+		
+		};  */
+	});
+</script>
+</head>
+<body>
+
+	<div class="container" style="border: 1px solid black;" ng-controller="checkBoxController">
+
+
+		<div class="row">
+
+			<div class="col-md-6" style="border: 1px solid black; height: 600px; padding: 10px">
+				<h2 align="center">Menu List:</h2>
+
+				
+
+					<div class="panel" ng-repeat="item in items" class="action-checkbox">
+
+
+
+						<input id="{{item.name}}" type="checkbox" value="{{item.name}}"
+							ng-checked="selection.indexOf(item) > -1"
+							ng-click="toggleSelection(item)"> 
+							<label for="{{item}}"> </label>
+						{{item.name+item.cost}}
+
+
+
+					</div>
+
+				<form action="addToCart" method="post">
+				 	<input type="submit" value="Add To Cart" >
+				 	<input type="hidden"value={{selection}} name="selection">
+				</form>
+
+			</div>
+			<div class="col-md-6" style="border: 1px solid black; height: 600px;">
+				<h2>Your Order</h2>
+
+
+
+				<div ng-repeat="item in selection" class="selected-item">
+
+					{{item.name}}{{item.cost|currency}}</div>
+
+
+				<table>
+					<tr>
+						<td>Total:</td>
+						<td>{{sum|currency}}</td>
+					</tr>
+				</table>
+
+
+			</div>
+
+
+		</div>
+		<div class="row">
+			<div></div>
+		</div>
+
+	</div>
+
+</body>
+</html>
+
